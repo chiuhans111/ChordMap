@@ -2,6 +2,24 @@
   <div>
     <section>
       <button @click="playEnabledKeys()">Play Enabled Keys</button>
+      <p>
+        Common Frequency =
+        {{ analyzeResult.common_frequency }}
+      </p>
+      <p>
+        Frequency Ratio =
+        <span v-if="analyzeResult.ratios">
+          {{ analyzeResult.ratios.join(" : ") }}
+        </span>
+        <span v-if="analyzeResult.ratios">
+          ({{ analyzeResult.ratios.reduce((a, b) => a + b, 0) }})
+        </span>
+      </p>
+      <p>
+        Mood =
+        <span>{{ analyzeResult.ratio_emoji }}</span>
+      </p>
+     
     </section>
     <section>
       <div ref="piano_container">
@@ -39,11 +57,13 @@
 <script>
 import piano from './script/piano'
 import sound from './script/sound'
+import chord from './script/chord'
 export default {
   name: 'App',
   data() {
     return {
-      pianoKeys: piano.pianoKeys
+      pianoKeys: piano.pianoKeys,
+      analyzeResult: {}
     }
   },
   components: {
@@ -62,10 +82,17 @@ export default {
       sound.playNotes([
         key.frequency,
       ], 0.5)
+      this.updateAnalyze()
     },
-    playEnabledKeys(){
-      sound.playNotes(piano.pianoKeys.filter(key=>key.enable).map(key=>key.frequency), 0.5)
+    playEnabledKeys() {
+      sound.playNotes(piano.pianoKeys.filter(key => key.enable).map(key => key.frequency), 0.5)
+    },
+    updateAnalyze() {
+      this.analyzeResult = chord.analyze(piano.pianoKeys.filter(key => key.enable).map(key => key.frequency))
     }
+  },
+  computed: {
+
   }
 }
 </script>
