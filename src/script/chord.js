@@ -62,7 +62,8 @@ function analyzeRatio(frequencies = [], ratio = [], frequencyDifferenceThreshold
                 const commonPitch = pitch.map((p, i) => p - interval[i]).reduce((a, b) => a + b, 0) / pitch.length
 
                 const error = pitch.map((p, i) => p - commonPitch - interval[i])
-                const mse = Math.sqrt(error.map(x => x * x).reduce((a, b) => a + b, 0))
+                // const mse = Math.sqrt(error.map(x => x * x).reduce((a, b) => a + b, 0))
+                const mse = error.map(x=>Math.abs(x)).reduce((a, b) => Math.max(a, b), 0)
 
                 if (best_mse === null || mse < best_mse) {
                     if (mse < 1) {
@@ -85,9 +86,10 @@ function analyzeRatio(frequencies = [], ratio = [], frequencyDifferenceThreshold
         }
     }
 
+
     results.sort((a, b) => {
         const mse_diff = a.mse - b.mse
-        if (Math.abs(mse_diff) < 0.15) return -a.commonFrequency + b.commonFrequency
+        if (Math.max(a.mse, b.mse) < 0.22) return -a.commonFrequency + b.commonFrequency
         return mse_diff
     })
 
