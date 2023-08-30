@@ -72,7 +72,21 @@ export default {
   components: {
   },
   mounted() {
+    // Read URL parameters
+    const urlParams = new URLSearchParams(window.location.search)
+    const keys = urlParams.get("keys")
 
+    try {
+      const index = keys.split(',').map(x => parseInt(x))
+      for (let key of this.pianoKeys) {
+        key.enable = index.includes(key.index)
+      }
+      this.updateAnalyze()
+    } catch (error) {
+      console.log('parameter parsing failed')
+    }
+
+    console.log("keys:", keys)
   },
   methods: {
     pianoKeyClick(key) {
@@ -91,6 +105,7 @@ export default {
       sound.playNotes(piano.pianoKeys.filter(key => key.enable).map(key => key.frequency), 0.5)
     },
     updateAnalyze() {
+      this.updateParams()
       this.analyzeResult = chord.analyze(
         piano.pianoKeys.filter(key => key.enable).map(key => key.frequency),
       )
@@ -99,6 +114,13 @@ export default {
       pitch = pitch.map((x) => x - pitch[0])
 
       this.pitchClass = pitch
+
+
+    },
+    updateParams() {
+      const keys = piano.pianoKeys.filter(key => key.enable).map(key => key.index).join(',')
+      const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?keys=${keys}`
+      window.history.pushState({}, '', newUrl)
     },
     playHint(hint) {
       sound.playNotes(hint.frequencies, 0.5)
