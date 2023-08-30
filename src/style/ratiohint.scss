@@ -3,10 +3,13 @@
     &-row {
         position: relative;
         height: 30px;
-        transform: translate(0, 50%);
 
         &.harmonized {
-            height: 6px;
+            height: 12px;
+        }
+
+        &:hover{
+            background-color: rgb(255, 241, 220);
         }
     }
 
@@ -17,6 +20,8 @@
         border-radius: 100%;
         text-align: center;
         font-weight: bold;
+
+        top: 50%;
 
         transform: translate(-50%, -50%);
 

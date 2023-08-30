@@ -5,3 +5,8 @@ html {
     font-family: "Roboto Condensed", sans-serif;
     background-color: rgb(251, 251, 251);
 }
+.scroll_horizontal{
+    overflow-x: scroll;
+    padding-bottom: 10px;
+    border: solid 2px lightgray;
+}
