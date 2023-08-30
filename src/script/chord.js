@@ -44,7 +44,7 @@ function analyzeRatio(frequencies = [], ratio = [], frequencyDifferenceThreshold
         let ratio_cache = {}
         let best_mse = null
 
-        for (let iteration = 0; iteration < 30; iteration++) {
+        for (let iteration = 0; iteration < 50; iteration++) {
             ratio = frequencies.map(x => Math.round(x / guessFrequency))
 
             const g = gcd(ratio)
@@ -57,15 +57,17 @@ function analyzeRatio(frequencies = [], ratio = [], frequencyDifferenceThreshold
 
                 ratio_cache[ratio_hash] = true
 
-                const f = frequencies.map((f, i) => f / simple_ratio[i])
-                const commonFrequency = f.reduce((a, b) => a + b, 0) / f.length
-                const error = frequencies.map((f, i) => Math.log2(f / (commonFrequency * simple_ratio[i])) * 12)
+                const pitch = frequencies.map(f => Math.log2(f) * 12)
+                const interval = simple_ratio.map(r => Math.log2(r) * 12)
+                const commonPitch = pitch.map((p, i) => p - interval[i]).reduce((a, b) => a + b, 0) / pitch.length
+
+                const error = pitch.map((p, i) => p - commonPitch - interval[i])
                 const mse = Math.sqrt(error.map(x => x * x).reduce((a, b) => a + b, 0))
 
                 if (best_mse === null || mse < best_mse) {
-                    if (mse < 1) {
+                    if (mse < 2) {
                         results.push({
-                            ratio: simple_ratio.map(x => x), commonFrequency, mse
+                            ratio: simple_ratio.map(x => x), commonFrequency: 2 ** (commonPitch / 12), mse
                         })
                     }
                     best_mse = mse
