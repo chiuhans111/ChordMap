@@ -23,7 +23,7 @@ function gcd(a, b) {
 
 
 
-function analyzeRatio(frequencies = [], ratio = [], frequencyDifferenceThreshold = 0.01) {
+function analyzeRatio(frequencies = [], ratio = [], frequencyDifferenceThreshold = 0.05) {
     let results = []
 
 
@@ -65,7 +65,7 @@ function analyzeRatio(frequencies = [], ratio = [], frequencyDifferenceThreshold
                 const mse = Math.sqrt(error.map(x => x * x).reduce((a, b) => a + b, 0))
 
                 if (best_mse === null || mse < best_mse) {
-                    if (mse < 2) {
+                    if (mse < 1) {
                         results.push({
                             ratio: simple_ratio.map(x => x), commonFrequency: 2 ** (commonPitch / 12), mse
                         })
@@ -87,7 +87,7 @@ function analyzeRatio(frequencies = [], ratio = [], frequencyDifferenceThreshold
 
     results.sort((a, b) => {
         const mse_diff = a.mse - b.mse
-        if (Math.abs(mse_diff) < 0.1) return -a.commonFrequency + b.commonFrequency
+        if (Math.abs(mse_diff) < 0.15) return -a.commonFrequency + b.commonFrequency
         return mse_diff
     })
 
