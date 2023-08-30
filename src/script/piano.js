@@ -15,6 +15,22 @@ function name2index(key, octave) {
     return toneMap[key] + octave * 12
 }
 
+function index2frequency(index) {
+    return f0 * (2 ** ((index - keyid_A4) / 12))
+}
+
+function frequency2index(frequency) {
+    return Math.log2(frequency / f0) * 12 + keyid_A4
+}
+
+function wrapToneNumber(index) {
+    return (index + 0.5) % 12 - 0.5
+}
+
+function nearestToneName(index) {
+    return toneNames[Math.round(wrapToneNumber(index))]
+}
+
 // Create Keys -------------------
 const keyid_start = name2index("C", 3)
 const keyid_end = name2index("B", 6)
@@ -31,7 +47,7 @@ for (let i = keyid_start; i <= keyid_end; i++) {
         octave: Math.floor(i / 12),
         isWhiteKey: !isBlackKey,
         isBlackKey,
-        frequency: f0 * (2 ** ((i - keyid_A4) / 12)),
+        frequency: index2frequency(i),
         enable: false,
         containerStyle: {
             position: "absolute",
@@ -50,6 +66,8 @@ for (let i = keyid_start; i <= keyid_end; i++) {
 function index2Xoffset(id) {
     return (id - keyid_start) * keyWidth
 }
+
+
 
 function updateStyle() {
     const octaveWidth = keyWidth * 12
@@ -78,5 +96,11 @@ function updateStyle() {
 updateStyle()
 
 export default {
-    pianoKeys: pianoKeys
+    pianoKeys,
+    frequency2index,
+    wrapToneNumber,
+    nearestToneName,
+    keyid_start,
+    keyid_end,
+    index2Xoffset
 }

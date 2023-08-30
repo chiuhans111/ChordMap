@@ -28,7 +28,7 @@ function playNotes(frequencies, duration) {
         oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime)
 
         // Create an ADSR envelope with attack, decay, sustain, and release times
-        const envelope = createEnvelope(audioContext, 0.1, 0.001, 0.1, 0.5, 0.1, duration)
+        const envelope = createEnvelope(audioContext, 0.2, 0.001, 0.1, 0.5, 0.1, duration)
 
         // Connect the oscillator to the envelope
         oscillator.connect(envelope)

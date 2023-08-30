@@ -1,64 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap");
+@import './piano.scss';
+@import './ratiohint.scss';
 html {
     font-family: "Roboto Condensed", sans-serif;
-}
-.piano_container {
-    &-note_name {
-        position: relative;
-        height: 30px;
-        text-align: center;
-        font-size: 18px;
-        font-weight: bold;
-        .note_octave {
-            font-size: 8px;
-        }
-    }
-    &-keyboard {
-        position: relative;
-        height: 200px;
-        .note_is_black {
-            background-color: black;
-            z-index: 1;
-            height: 60%;
-        }
-
-        .note_is_white {
-            z-index: 0;
-            border-bottom: solid 2px black;
-            border-top: solid 15px rgb(108, 108, 108);
-            background-color: white;
-            height: 100%;
-        }
-        .note_body {
-            border-left: solid 1px black;
-            border-right: solid 1px black;
-            border-radius: 4px;
-            &:hover {
-                background-color: orange;
-            }
-            box-sizing: border-box;
-        }
-    }
-    &-editor {
-        position: relative;
-        .note_is_black {
-            background-color: rgb(23, 23, 23);
-        }
-        .note_is_white {
-            background-color: rgb(69, 69, 69);
-        }
-        .note_box {
-            border: solid 1px black;
-            height: 60px;
-
-            .note_enable {
-                background-color: red;
-            }
-            box-sizing: border-box;
-
-            &:hover {
-                background-color: orange;
-            }
-        }
-    }
 }
