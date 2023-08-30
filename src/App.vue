@@ -2,11 +2,11 @@
   <div>
     <section>
       <button @click="playEnabledKeys()">Play Enabled Keys</button>
-
+      {{ pitchClass }}
 
     </section>
     <section>
-      <div ref="piano_container">
+      <div class="piano_container" :style="{ width: fullWidth + 'px' }">
         <!-- Note Name -->
         <div class="piano_container-note_name">
           <div :style="key.containerStyle" v-for="key in pianoKeys" :key="key.index">
@@ -22,14 +22,15 @@
         <!-- keyboard -->
         <div class="piano_container-keyboard">
           <div :style="key.keyStyle" :class="key.cssClass" class="note_body" v-for="key in pianoKeys" :key="key.index" @click.prevent="pianoKeyClick(key)">
-            {{ key.name }}
+            <!-- {{ key.name }} -->
           </div>
         </div>
         <!-- Working area -->
         <div class="piano_container-editor">
           <div :style="key.containerStyle" :class="key.cssClass" class="note_box" v-for="key in pianoKeys" :key="key.index" @click.prevent="editorKeyClick(key)">
-            <div :class="{ 'note_enable': key.enable }">
-              {{ key.enable }}
+            <div :class="{ 'note_enable': key.enable }" class="note_box-tag">
+              {{ key.name }}
+              <!-- {{ key.enable }} -->
             </div>
           </div>
         </div>
@@ -39,9 +40,11 @@
     <section>
       <!-- Result Area -->
       <div class="ratio_hint">
-        <div class="ratio_hint-row" v-for="hint, i in analyzeResult.hints" :key="i">
+        <div class="ratio_hint-row" :class="{ 'harmonized': hint.harmonized }" v-for="hint, i in analyzeResult.hints" :key="i" @click="playHint(hint)">
           <div class="ratio_hint-node" :style="node.style" :class="node.cssClass" v-for="node, i in hint.nodes" :key="i">
-            {{ node.ratio }}
+            <template v-if="!node.cssClass['node_is_minimize']">
+              {{ node.ratio }}
+            </template>
           </div>
         </div>
       </div>
@@ -59,7 +62,9 @@ export default {
   data() {
     return {
       pianoKeys: piano.pianoKeys,
-      analyzeResult: {}
+      analyzeResult: {},
+      pitchClass: [],
+      fullWidth: piano.fullWidth
     }
   },
   components: {
@@ -87,6 +92,14 @@ export default {
       this.analyzeResult = chord.analyze(
         piano.pianoKeys.filter(key => key.enable).map(key => key.frequency),
       )
+
+      let pitch = piano.pianoKeys.filter(key => key.enable).map(key => key.index)
+      pitch = pitch.map((x) => x - pitch[0])
+
+      this.pitchClass = pitch
+    },
+    playHint(hint) {
+      sound.playNotes(hint.frequencies, 0.5)
     }
   },
   computed: {

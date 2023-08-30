@@ -1,17 +1,41 @@
 .ratio_hint {
+    position: relative;
     &-row {
+        position: relative;
         height: 30px;
+        transform: translate(0, 50%);
+
+        &.harmonized {
+            height: 6px;
+        }
     }
 
-    &-node{
-        width: 20px;
-        height: 20px;
+    &-node {
+        width: 25px;
+        height: 25px;
+
         border-radius: 100%;
         text-align: center;
         font-weight: bold;
 
-        &.node_is_key{
+        transform: translate(-50%, -50%);
+
+        font-size: 16px;
+        background-color: lightgray;
+        padding-top: 2px;
+        box-sizing: border-box;
+
+        
+
+        &.node_is_minimize {
+            width: 6px;
+            height: 6px;
+            background-color: rgb(133, 133, 133);
+        }
+
+        &.node_is_key {
             background-color: orange;
+            z-index: 1;
         }
     }
 }

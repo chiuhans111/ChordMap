@@ -6,6 +6,7 @@ const toneIsBlack = [false, true, false, true, false, false, true, false, true, 
 const f0 = 440 // A4
 const toneMap = {}
 let keyWidth = 35
+
 for (let i = 0; i < 12; i++) {
     const name = toneNames[i]
     toneMap[name] = i
@@ -32,9 +33,11 @@ function nearestToneName(index) {
 }
 
 // Create Keys -------------------
-const keyid_start = name2index("C", 3)
-const keyid_end = name2index("B", 6)
-
+const keyid_start = name2index("C", 2)
+// const keyid_start = name2index("A", 0)
+const keyid_end = name2index("B", 7)
+// const keyid_end = name2index("C", 8)
+const fullWidth = (keyid_end - keyid_start + 1) * keyWidth
 const keyid_A4 = name2index("A", 4)
 
 for (let i = keyid_start; i <= keyid_end; i++) {
@@ -60,14 +63,13 @@ for (let i = keyid_start; i <= keyid_end; i++) {
             "note_is_black": isBlackKey,
         }
     }
+
     pianoKeys.push(key)
 }
 
 function index2Xoffset(id) {
     return (id - keyid_start) * keyWidth
 }
-
-
 
 function updateStyle() {
     const octaveWidth = keyWidth * 12
@@ -102,5 +104,6 @@ export default {
     nearestToneName,
     keyid_start,
     keyid_end,
-    index2Xoffset
+    index2Xoffset,
+    fullWidth
 }
