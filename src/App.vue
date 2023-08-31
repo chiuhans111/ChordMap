@@ -41,7 +41,7 @@
 
         <!-- Result Area -->
         <div class="ratio_hint" :style="{ width: fullWidth + 'px' }">
-          <div class="ratio_hint-row" :class="{ 'harmonized': hint.harmonized }" v-for="hint, i in analyzeResult.hints" :key="i" @click="playHint(hint)">
+          <div class="ratio_hint-row" :class="{ 'is_higher_harmonics': hint.isHigherHarmonics }" v-for="hint, i in analyzeResult.hints" :key="i" @click="playHint(hint)">
             <div class="ratio_hint-node" :style="node.style" :class="node.cssClass" v-for="node, i in hint.nodes" :key="i">
               <template v-if="!node.cssClass['node_is_minimize']">
                 {{ node.ratio }}

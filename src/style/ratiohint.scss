@@ -4,7 +4,7 @@
         position: relative;
         height: 30px;
 
-        &.harmonized {
+        &.is_higher_harmonics {
             height: 12px;
         }
 
@@ -39,8 +39,17 @@
         }
 
         &.node_is_key {
-            background-color: orange;
             z-index: 1;
+
+            &.node_is_overtone {
+                background-color: orange;
+            }
+            &.node_is_undertone {
+                background-color: rgb(0, 204, 255);
+            }
         }
+
+        
+
     }
 }

@@ -143,10 +143,10 @@ v = np.array([
 v_candidates = []
 
 for i in range(500000):
-    vp = np.abs(np.random.standard_normal(3))
+    vp = np.random.standard_normal(3)*2+[98, 1, 0.798]
     vp = vp / np.sqrt(np.sum(vp**2))
 
-    if np.all(np.sum(v * vp[:, None], 0)>0):
+    if np.all(np.sum(v * vp[:, None], 0) > 0):
         v_candidates.append(vp)
 
 print("average over", len(v_candidates), "candidates")
