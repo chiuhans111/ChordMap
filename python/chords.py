@@ -57,15 +57,15 @@ def find_ratio_from_pitches(pitches):
         if best is None or rmse < best:
             best = rmse
 
-            if rmse < 0.15 and complexity < 15 and ratio[0] < 15:
-                result.append({
-                    "ratio": tuple(ratio),
-                    "max_error": max_error,
-                    "rmse": rmse,
-                    "merit": rmse * 77.543 + ratio[0] - 2*complexity,
-                    "complexity": complexity,
-                    "common_pitch": common_pitch,
-                })
+        if rmse < 0.2 and complexity < 14 and ratio[0] < 20:
+            result.append({
+                "ratio": tuple(ratio),
+                "max_error": max_error,
+                "rmse": rmse,
+                "merit": rmse * 101.314 + ratio[0] + complexity*1.155,
+                "complexity": complexity,
+                "common_pitch": common_pitch,
+            })
 
     result.sort(key=lambda x: x["merit"])
     return result
@@ -94,6 +94,7 @@ complexity = []
 common_frequency = []
 r0 = []
 merit = []
+size = []
 
 for pitches, good_ratio in test_set:
     result = find_ratio_from_pitches(pitches)
@@ -111,19 +112,46 @@ for pitches, good_ratio in test_set:
         print("answer not found")
 
     for r in result:
+
+        size.append(50 if (r['ratio'] == good_ratio) else 5)
+
         correct.append(r['ratio'] == good_ratio)
         rmse.append(r['rmse'] - good_r['rmse'])
         r0.append(r['ratio'][0] - good_r['ratio'][0])
         merit.append(r['merit'] - good_r['merit'])
         complexity.append(r['complexity'] - good_r['complexity'])
 
-        if not r['ratio'] == good_ratio:
-            print(r['rmse'] - good_r['rmse'])
-            print(r['ratio'][0] - good_r['ratio'][0])
-            print(r['complexity'] - good_r['complexity'])
-            print('  ')
         # correct.append(r['ratio'] == good_ratio)
         # rmse.append(r['rmse'])
         # r0.append(r['ratio'][0])
         # merit.append(r['merit'])
         # complexity.append(r['complexity'])
+
+correct = np.array(correct)
+rmse = np.array(rmse)
+r0 = np.array(r0)
+complexity = np.array(complexity)
+
+
+v = np.array([
+    rmse,
+    r0,
+    complexity
+])[:, ~correct]
+
+
+v_candidates = []
+
+for i in range(500000):
+    vp = np.abs(np.random.standard_normal(3))
+    vp = vp / np.sqrt(np.sum(vp**2))
+
+    if np.all(np.sum(v * vp[:, None], 0)>0):
+        v_candidates.append(vp)
+
+print("average over", len(v_candidates), "candidates")
+weights = np.mean(v_candidates, 0)
+print(weights / weights[1])
+
+plt.scatter(rmse, r0, c=correct, s=size)
+plt.show()
