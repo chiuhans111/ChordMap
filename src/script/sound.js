@@ -1,13 +1,13 @@
 // Create audio context
-const audioContext = new window.AudioContext()
+let audioContext = null
 
 // Function to create an ADSR envelope
 function createEnvelope(context, volumn, attack, decay, sustain, release, duration) {
     const envelope = context.createGain()
     envelope.gain.setValueAtTime(0, context.currentTime)
     envelope.gain.linearRampToValueAtTime(volumn, context.currentTime + attack)
-    envelope.gain.linearRampToValueAtTime(volumn*sustain, context.currentTime + attack + decay)
-    envelope.gain.linearRampToValueAtTime(volumn*sustain, context.currentTime + duration - release)
+    envelope.gain.linearRampToValueAtTime(volumn * sustain, context.currentTime + attack + decay)
+    envelope.gain.linearRampToValueAtTime(volumn * sustain, context.currentTime + duration - release)
     envelope.gain.linearRampToValueAtTime(0, context.currentTime + duration)
     return envelope
 }
@@ -15,15 +15,21 @@ function createEnvelope(context, volumn, attack, decay, sustain, release, durati
 let oscillators = []
 // Function to play a note
 function playNotes(frequencies, duration) {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)()
+    }
+
+   
+
     // Create an oscillator node
     // for(let oscillator of oscillators){
     //     oscillator.stop(audioContext.currentTime)
     // }
     oscillators.splice(0, oscillators.length)
-    for(let frequency of frequencies){
+    for (let frequency of frequencies) {
 
         const oscillator = audioContext.createOscillator()
-
+        oscillator.type = 'sine';
         // Set the frequency
         oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime)
 
