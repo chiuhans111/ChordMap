@@ -138,12 +138,17 @@ export default {
     const keys = urlParams.get("keys")
 
     try {
-      const index = keys.split(',').map(x => parseInt(x))
-      for (let key of this.pianoKeys) {
-        key.enable = index.includes(key.index)
+      const index = keys.split(',').map(x => parseInt(x)).filter(x => !isNaN(x))
+      if (index.length > 0) {
+        for (let key of this.pianoKeys) {
+          key.enable = index.includes(key.index)
+        }
+        this.updateAnalyze()
+        this.scrollKeyIntoView()
+      } else {
+        console.log('no keys')
+        this.scrollToKeyIndex((piano.keyid_start + piano.keyid_end) / 2)
       }
-      this.updateAnalyze()
-      this.scrollKeyIntoView()
     } catch (error) {
       console.log('parameter parsing failed')
       this.scrollToKeyIndex((piano.keyid_start + piano.keyid_end) / 2)
@@ -218,9 +223,16 @@ export default {
 
     },
     updateParams() {
-      const keys = piano.pianoKeys.filter(key => key.enable).map(key => key.index).join(',')
-      const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?keys=${keys}`
-      window.history.pushState({}, '', newUrl)
+      const enabledKeys = piano.pianoKeys.filter(key => key.enable)
+      if (enabledKeys.length > 0) {
+
+        const keys = enabledKeys.map(key => key.index).join(',')
+        const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?keys=${keys}`
+        window.history.replaceState({}, '', newUrl)
+      } else {
+        const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`
+        window.history.replaceState({}, '', newUrl)
+      }
     },
     playHint(hint, node) {
       if (node === undefined) {
