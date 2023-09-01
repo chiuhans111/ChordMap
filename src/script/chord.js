@@ -194,7 +194,7 @@ function analyze(frequencies = []) {
             for (let harmonics = 1; harmonics <= max_harmonics; harmonics++) {
                 new_results.push({
                     ratio: result.ratio.map(r => r * harmonics),
-                    lcm: result.lcm,
+                    lcm: result.lcm * harmonics,
                     commonFrequency: result.commonFrequency / harmonics,
                     isHigherHarmonics: harmonics > 1,
                     isOvertone: true,
