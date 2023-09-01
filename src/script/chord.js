@@ -79,7 +79,7 @@ function analyzeRatio(frequencies = []) {
         let ratio = frequencies.map(f => Math.floor(f / min_frequency))
 
         // find overtone
-        for (let iteration = 0; iteration < 20; iteration++) {
+        for (let iteration = 0; iteration < 50; iteration++) {
             const guessFrequency = Math.max(...frequencies.map((x, i) => x / (ratio[i] + 1)))
             ratio = frequencies.map(x => Math.round(x / guessFrequency))
 
@@ -110,7 +110,7 @@ function analyzeRatio(frequencies = []) {
         // find undertone
         const max_frequency = Math.max(...frequencies)
         ratio = frequencies.map(f => Math.floor(max_frequency / f))
-        for (let iteration = 0; iteration < 20; iteration++) {
+        for (let iteration = 0; iteration < 40; iteration++) {
             const guessFrequency = Math.min(...frequencies.map((x, i) => x * (ratio[i] + 1)))
             ratio = frequencies.map(x => Math.round(guessFrequency / x))
             const fake_lcm = ratio.reduce((a, b) => a * b, 1)
@@ -144,7 +144,9 @@ function analyzeRatio(frequencies = []) {
         return a.merit - b.merit
     })
 
-    return results.splice(0, 3)
+    Object.freeze(results)
+
+    return results.slice(0, 3)
 }
 
 
@@ -188,30 +190,31 @@ function analyze(frequencies = []) {
 
         if (result.isOvertone) {
             let nodes = []
-            for (let i = 1; i <= Math.max(result.ratio[result.ratio.length - 1], 35); i++) {
+            const maxRatio = Math.max(35, ...result.ratio)
+            for (let i = 1; i <= maxRatio; i++) {
                 const frequency = i * result.commonFrequency
                 const index = piano.frequency2index(frequency)
                 const isKey = result.ratio.includes(i)
                 if (index < piano.keyid_start - 1 || index > piano.keyid_end + 1) continue
-
-                nodes.push({
-                    ratio: i,
-                    frequency,
-                    index,
-                    isKey,
-                    style: {
-                        position: "absolute",
-                        left: piano.index2Xoffset(index + 0.5) + "px"
-                    },
-                    cssClass: {
-                        "node_is_key": isKey,
-                        "node_is_minimize": !isKey && i > 35 || result.isHigherHarmonics,
-                        "node_is_overtone": true,
-                    }
-                })
+                if (isKey || i < 100)
+                    nodes.push({
+                        ratio: i,
+                        frequency,
+                        index,
+                        isKey,
+                        style: {
+                            position: "absolute",
+                            left: piano.index2Xoffset(index + 0.5) + "px"
+                        },
+                        cssClass: {
+                            "node_is_key": isKey,
+                            "node_is_minimize": !isKey && i > 35 || result.isHigherHarmonics,
+                            "node_is_overtone": true,
+                        }
+                    })
             }
             hints.push({
-                nodes,
+                nodes, ratio: result.ratio,
                 frequencies: result.ratio.map(x => x * result.commonFrequency),
                 isHigherHarmonics: result.isHigherHarmonics
             })
@@ -220,31 +223,33 @@ function analyze(frequencies = []) {
         if (result.isUndertone) {
             let nodes = []
             const undertoneRatio = result.ratio.map(x => result.lcm / x)
-            for (let i = 1; i <= Math.max(undertoneRatio[undertoneRatio.length - 1], 35); i++) {
+            const maxRatio = Math.max(35, ...undertoneRatio)
+            for (let i = 1; i <= maxRatio; i++) {
                 const ratio = result.lcm / i
                 const frequency = ratio * result.commonFrequency
                 const index = piano.frequency2index(frequency)
                 const isKey = undertoneRatio.includes(i)
                 if (index < piano.keyid_start - 1 || index > piano.keyid_end + 1) continue
 
-                nodes.push({
-                    ratio: i,
-                    frequency,
-                    index,
-                    isKey,
-                    style: {
-                        position: "absolute",
-                        left: piano.index2Xoffset(index + 0.5) + "px"
-                    },
-                    cssClass: {
-                        "node_is_key": isKey,
-                        "node_is_minimize": !isKey && i > 35 || result.isHigherHarmonics,
-                        "node_is_undertone": true
-                    }
-                })
+                if (isKey || i < 100)
+                    nodes.push({
+                        ratio: i,
+                        frequency,
+                        index,
+                        isKey,
+                        style: {
+                            position: "absolute",
+                            left: piano.index2Xoffset(index + 0.5) + "px"
+                        },
+                        cssClass: {
+                            "node_is_key": isKey,
+                            "node_is_minimize": !isKey && i > 35 || result.isHigherHarmonics,
+                            "node_is_undertone": true
+                        }
+                    })
             }
             hints.push({
-                nodes,
+                nodes, ratio: result.ratio,
                 frequencies: result.ratio.map(x => x * result.commonFrequency),
                 isHigherHarmonics: result.isHigherHarmonics
             })
@@ -254,12 +259,15 @@ function analyze(frequencies = []) {
 
     }
 
-
-    return {
+    const result = {
         frequencies,
         results,
         hints
     }
+
+    Object.freeze(result)
+
+    return result
 }
 
 export default {

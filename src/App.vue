@@ -2,7 +2,23 @@
   <div>
     <section>
       <button @click="playEnabledKeys()">Play Enabled Keys</button>
-      {{ pitchClass }}
+      <div>
+        <button @click="clearAllKeys()">Clear All Keys</button>
+
+        <select ref="key selector">
+          <option :value="i" v-for="i in toneNames" :key="i">{{ i }}</option>
+        </select>
+        <select ref="octave selector" value="4">
+          <option :value="i" v-for="i in [2, 3, 4, 5, 6]" :key="i">{{ i }}</option>
+        </select>
+        <select ref="chord selector">
+          <option :value="chord.keys" v-for="chord, i in chordDatabase.chords" :key="i">{{ chord.name }}</option>
+        </select>
+        <button @click="applyChords()">Apply Chords</button>
+      </div>
+      <p>
+        Pitch Class and ratio = {{ pitchClass }}, {{ ratio }}
+      </p>
 
     </section>
     <section>
@@ -59,14 +75,20 @@
 import piano from './script/piano'
 import sound from './script/sound'
 import chord from './script/chord'
+import chordDatabase from './script/chordDatabase'
+console.log(chordDatabase)
+
 export default {
   name: 'App',
   data() {
     return {
       pianoKeys: piano.pianoKeys,
+      toneNames: piano.toneNames,
+      fullWidth: piano.fullWidth,
       analyzeResult: {},
       pitchClass: [],
-      fullWidth: piano.fullWidth
+      ratio: [],
+      chordDatabase
     }
   },
   components: {
@@ -89,6 +111,30 @@ export default {
     console.log("keys:", keys)
   },
   methods: {
+    clearAllKeys() {
+      for (let key of this.pianoKeys) {
+        key.enable = false
+      }
+      this.updateAnalyze()
+    },
+    applyChords() {
+      const key_selector = this.$refs['key selector']
+      const octave_selector = this.$refs['octave selector']
+      const chord_selector = this.$refs['chord selector']
+
+      const key = key_selector.value
+      const octave = octave_selector.value
+      const chord = chord_selector.value.split(',').map(x => parseInt(x))
+
+      const index = piano.name2index(key, octave)
+
+      for (let key of this.pianoKeys) {
+        key.enable = chord.includes(key.index - index)
+      }
+
+      this.updateAnalyze()
+      this.playEnabledKeys()
+    },
     pianoKeyClick(key) {
       sound.playNotes([
         key.frequency,
@@ -114,7 +160,9 @@ export default {
       pitch = pitch.map((x) => x - pitch[0])
 
       this.pitchClass = pitch
-
+      if (this.analyzeResult.hints.length > 0)
+        this.ratio = this.analyzeResult.hints[0].ratio
+      else this.ratio = []
 
     },
     updateParams() {
@@ -124,6 +172,7 @@ export default {
     },
     playHint(hint) {
       sound.playNotes(hint.frequencies, 0.5)
+      this.ratio = hint.ratio
     }
   },
   computed: {

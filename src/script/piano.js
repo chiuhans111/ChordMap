@@ -99,11 +99,13 @@ updateStyle()
 
 export default {
     pianoKeys,
+    toneNames,
     frequency2index,
     wrapToneNumber,
     nearestToneName,
     keyid_start,
     keyid_end,
     index2Xoffset,
-    fullWidth
+    fullWidth,
+    name2index
 }

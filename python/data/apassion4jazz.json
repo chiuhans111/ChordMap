@@ -1,0 +1,436 @@
+[
+    {
+        "value": [
+            5,
+            8
+        ],
+        "name": "Major"
+    },
+    {
+        "value": [
+            4,
+            8
+        ],
+        "name": "Minor"
+    },
+    {
+        "value": [
+            8
+        ],
+        "name": "5"
+    },
+    {
+        "value": [
+            5,
+            8,
+            11
+        ],
+        "name": "Dominant 7th"
+    },
+    {
+        "value": [
+            5,
+            8,
+            12
+        ],
+        "name": "Major 7th"
+    },
+    {
+        "value": [
+            4,
+            8,
+            11
+        ],
+        "name": "Minor 7th"
+    },
+    {
+        "value": [
+            4,
+            8,
+            12
+        ],
+        "name": "Minor Major 7th"
+    },
+    {
+        "value": [
+            6,
+            8
+        ],
+        "name": "Sus 4"
+    },
+    {
+        "value": [
+            3,
+            8
+        ],
+        "name": "Sus 2"
+    },
+    {
+        "value": [
+            5,
+            8,
+            10
+        ],
+        "name": "6"
+    },
+    {
+        "value": [
+            4,
+            8,
+            10
+        ],
+        "name": "Minor 6"
+    },
+    {
+        "value": [
+            5,
+            8,
+            11,
+            3
+        ],
+        "name": "9"
+    },
+    {
+        "value": [
+            4,
+            8,
+            11,
+            3
+        ],
+        "name": "Minor 9"
+    },
+    {
+        "value": [
+            5,
+            8,
+            12,
+            3
+        ],
+        "name": "Major 9"
+    },
+    {
+        "value": [
+            4,
+            8,
+            12,
+            3
+        ],
+        "name": "Minor Major 9"
+    },
+    {
+        "value": [
+            5,
+            8,
+            11,
+            3,
+            6
+        ],
+        "name": "11"
+    },
+    {
+        "value": [
+            4,
+            8,
+            11,
+            3,
+            6
+        ],
+        "name": "Minor 11"
+    },
+    {
+        "value": [
+            5,
+            8,
+            12,
+            3,
+            6
+        ],
+        "name": "Major 11"
+    },
+    {
+        "value": [
+            4,
+            8,
+            12,
+            3,
+            6
+        ],
+        "name": "Minor Major 11"
+    },
+    {
+        "value": [
+            5,
+            8,
+            11,
+            3,
+            10
+        ],
+        "name": "13"
+    },
+    {
+        "value": [
+            4,
+            8,
+            11,
+            3,
+            10
+        ],
+        "name": "Minor 13"
+    },
+    {
+        "value": [
+            5,
+            8,
+            12,
+            3,
+            10
+        ],
+        "name": "Major 13"
+    },
+    {
+        "value": [
+            4,
+            8,
+            12,
+            3,
+            10
+        ],
+        "name": "Minor Major 13"
+    },
+    {
+        "value": [
+            5,
+            8,
+            3
+        ],
+        "name": "add 9"
+    },
+    {
+        "value": [
+            4,
+            8,
+            3
+        ],
+        "name": "Minor add 9"
+    },
+    {
+        "value": [
+            5,
+            8,
+            10,
+            3
+        ],
+        "name": "6 add 9"
+    },
+    {
+        "value": [
+            4,
+            8,
+            10,
+            3
+        ],
+        "name": "Minor 6 add 9"
+    },
+    {
+        "value": [
+            5,
+            8,
+            11,
+            6
+        ],
+        "name": "Dominant 7th add 11"
+    },
+    {
+        "value": [
+            5,
+            8,
+            12,
+            6
+        ],
+        "name": "Major 7th add 11"
+    },
+    {
+        "value": [
+            4,
+            8,
+            11,
+            6
+        ],
+        "name": "Minor 7th add 11"
+    },
+    {
+        "value": [
+            4,
+            8,
+            12,
+            6
+        ],
+        "name": "Minor Major 7th add 11"
+    },
+    {
+        "value": [
+            5,
+            8,
+            11,
+            10
+        ],
+        "name": "Dominant 7th add 13"
+    },
+    {
+        "value": [
+            5,
+            8,
+            12,
+            10
+        ],
+        "name": "Major 7th add 13"
+    },
+    {
+        "value": [
+            4,
+            8,
+            11,
+            10
+        ],
+        "name": "Minor 7th add 13"
+    },
+    {
+        "value": [
+            4,
+            8,
+            12,
+            10
+        ],
+        "name": "Minor Major 7th add 13"
+    },
+    {
+        "value": [
+            5,
+            7,
+            11
+        ],
+        "name": "7b5"
+    },
+    {
+        "value": [
+            5,
+            9,
+            11
+        ],
+        "name": "7#5"
+    },
+    {
+        "value": [
+            5,
+            8,
+            11,
+            2
+        ],
+        "name": "7b9"
+    },
+    {
+        "value": [
+            5,
+            8,
+            11,
+            4
+        ],
+        "name": "7#9"
+    },
+    {
+        "value": [
+            5,
+            9,
+            11,
+            2
+        ],
+        "name": "7#5b9"
+    },
+    {
+        "value": [
+            4,
+            7,
+            11
+        ],
+        "name": "m7b5"
+    },
+    {
+        "value": [
+            4,
+            9,
+            11
+        ],
+        "name": "m7#5"
+    },
+    {
+        "value": [
+            4,
+            8,
+            11,
+            2
+        ],
+        "name": "m7b9"
+    },
+    {
+        "value": [
+            5,
+            8,
+            11,
+            3,
+            7
+        ],
+        "name": "9#11"
+    },
+    {
+        "value": [
+            5,
+            8,
+            11,
+            3,
+            9
+        ],
+        "name": "9b13"
+    },
+    {
+        "value": [
+            6,
+            8,
+            10
+        ],
+        "name": "6sus4"
+    },
+    {
+        "value": [
+            6,
+            8,
+            11
+        ],
+        "name": "7sus4"
+    },
+    {
+        "value": [
+            6,
+            8,
+            12
+        ],
+        "name": "Major 7th Sus4"
+    },
+    {
+        "value": [
+            6,
+            8,
+            11,
+            3
+        ],
+        "name": "9sus4"
+    },
+    {
+        "value": [
+            6,
+            8,
+            12,
+            3
+        ],
+        "name": "Major 9 Sus4"
+    }
+]
