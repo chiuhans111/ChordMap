@@ -2,39 +2,37 @@
     position: relative;
     &-row {
         position: relative;
-        height: 30px;
+        height: 40px;
 
         &.is_higher_harmonics {
             height: 12px;
         }
 
-        &:hover{
+        &:hover {
             background-color: rgb(235, 235, 235);
         }
     }
 
     &-node {
-        width: 25px;
-        height: 25px;
+        width: 30px;
+        height: 30px;
 
         border-radius: 100%;
         text-align: center;
         font-weight: bold;
 
         top: 50%;
-
+        
         transform: translate(-50%, -50%);
 
-        font-size: 16px;
+        font-size: 18px;
         background-color: lightgray;
-        padding-top: 2px;
         box-sizing: border-box;
-
-        
+        border: solid 3px white;
 
         &.node_is_minimize {
-            width: 6px;
-            height: 6px;
+            width: 12px;
+            height: 12px;
             background-color: rgb(133, 133, 133);
         }
 
@@ -46,6 +44,15 @@
             }
             &.node_is_undertone {
                 background-color: rgb(0, 204, 255);
+            }
+        }
+
+        &.node_is_factor {
+            &.node_is_overtone {
+                border: solid 3px orange;
+            }
+            &.node_is_undertone {
+                border: solid 3px rgb(0, 204, 255);
             }
         }
     }

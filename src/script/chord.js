@@ -31,9 +31,16 @@ function LCM(a, b) {
     return a * b / GCD(a, b)
 }
 
+function odd_part(arr) {
+    return arr.map(x => {
+        while (x % 2 == 0) x = x >> 1
+        return x
+    })
+}
+
 function evaluateRatio(frequencies, simple_ratio) {
     const lcm = LCM(simple_ratio)
-    const complexity = Math.log2(lcm)
+    const log_complexity = Math.log2(lcm)
 
     const pitch = frequencies.map(f => Math.log2(f) * 12)
     const interval = simple_ratio.map(r => Math.log2(r) * 12)
@@ -44,17 +51,40 @@ function evaluateRatio(frequencies, simple_ratio) {
     const error = pitch.map((p, i) => p - commonPitch - interval[i])
     const rmse = Math.sqrt(error.map(x => x * x).reduce((a, b) => a + b, 0) / error.length)
 
-    const llcm = complexity * 12
+    const llcm = log_complexity * 12
     // const meanInterval = interval.reduce((a, b) => a + b, 0) / interval.length
     const isOvertone = Math.min(...interval) <= llcm / 2
     const isUndertone = Math.max(...interval) >= llcm / 2
 
-    // const r0 = Math.min(...ratio)
-    const r0 = Math.min(...simple_ratio, ...simple_ratio.map(x => lcm / x))
-    const valid = rmse < 0.2 && complexity < 14 && r0 < 20
-    const merit = rmse * 98 + r0 + complexity * 0.8
+    const reverse_ratio = simple_ratio.map(x => lcm / x)
 
-    return { lcm, rmse, r0, complexity, isOvertone, isUndertone, valid, merit, commonFrequency }
+    const log_min_complexity = Math.log2(LCM(odd_part(simple_ratio)))
+
+    const log_r0 = Math.log2(Math.min(...simple_ratio, ...reverse_ratio))
+    const log_r1 = Math.log2(Math.min(
+        simple_ratio.reduce((a, b) => a + b) / simple_ratio.length,
+        reverse_ratio.reduce((a, b) => a + b) / reverse_ratio.length
+    ))
+
+    const valid = rmse < 0.15 && log_complexity < 20 && log_r0 < 6
+    const merit =
+        + rmse * 0.0025919
+        + log_complexity * 0.97270508
+        + log_min_complexity * 1.
+        + log_r0 * 0.25572689
+        + log_r1 * 0.25703505
+
+    return {
+        valid,
+        merits: {
+            rmse, log_complexity, log_min_complexity, log_r0, log_r1
+        },
+        lcm,
+        isOvertone,
+        isUndertone,
+        merit,
+        commonFrequency
+    }
 }
 
 function analyzeRatio(frequencies = []) {
@@ -98,10 +128,10 @@ function analyzeRatio(frequencies = []) {
                         ratio: simple_ratio.map(x => x),
                         lcm: result.lcm,
                         commonFrequency: result.commonFrequency,
-                        rmse: result.rmse,
                         merit: result.merit,
                         isOvertone: result.isOvertone,
                         isUndertone: result.isUndertone,
+                        merits: result.merits,
                     })
                 }
             }
@@ -146,7 +176,7 @@ function analyzeRatio(frequencies = []) {
 
     Object.freeze(results)
 
-    return results.slice(0, 3)
+    return results.slice(0, 4)
 }
 
 
@@ -210,6 +240,7 @@ function analyze(frequencies = []) {
                             "node_is_key": isKey,
                             "node_is_minimize": !isKey && i > 35 || result.isHigherHarmonics,
                             "node_is_overtone": true,
+                            "node_is_factor": result.lcm % i == 0
                         }
                     })
             }
@@ -244,7 +275,8 @@ function analyze(frequencies = []) {
                         cssClass: {
                             "node_is_key": isKey,
                             "node_is_minimize": !isKey && i > 35 || result.isHigherHarmonics,
-                            "node_is_undertone": true
+                            "node_is_undertone": true,
+                            "node_is_factor": result.lcm % i == 0
                         }
                     })
             }

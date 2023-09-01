@@ -13,7 +13,7 @@
 
     &-keyboard {
         position: relative;
-        height: 200px;
+        height: 250px;
         .note_is_black {
             background-color: black;
             z-index: 1;
@@ -23,7 +23,7 @@
         .note_is_white {
             z-index: 0;
             border-bottom: solid 2px black;
-            border-top: solid 15px rgb(108, 108, 108);
+            border-top: solid 4px black;
             background-color: white;
             height: 100%;
         }
