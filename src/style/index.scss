@@ -1,12 +1,48 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap");
-@import './piano.scss';
-@import './ratiohint.scss';
+@import "./piano.scss";
+@import "./ratiohint.scss";
 html {
+    padding: 0;
+    margin: 0;
     font-family: "Roboto Condensed", sans-serif;
     background-color: rgb(251, 251, 251);
 }
-.scroll_horizontal{
+body{
+    padding: 0;
+    margin: 0;
+}
+.container{
+    margin: auto;
+    max-width: 1200px;
+    padding: 8px;
+    box-sizing: border-box;
+}
+button, select{
+    cursor: pointer;
+    height: 30px;
+    padding: 0px 8px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    border: solid 1px gray;
+    background-color: rgb(235, 235, 235);
+    margin: 6px 2px;
+    &:hover{
+        background-color: white;
+    }
+}
+
+.scroll_horizontal {
     overflow-x: scroll;
     padding-bottom: 10px;
-    border: solid 2px lightgray;
+
+    &-sticky {
+        position: sticky;
+        text-align: center;
+        left: 0px;
+        width: 100%;
+        font-size: 12px;
+        background-color: rgb(48, 48, 48);
+        color: rgb(192, 192, 192);
+        padding: 2px 0px;
+    }
 }

@@ -14,21 +14,28 @@
     }
 
     &-node {
+
+        cursor: pointer;
+        top: 50%;
         width: 30px;
         height: 30px;
 
         border-radius: 100%;
-        text-align: center;
-        font-weight: bold;
-
-        top: 50%;
         
-        transform: translate(-50%, -50%);
-
-        font-size: 18px;
+        font-size: 14px;
+        font-weight: bold;
         background-color: lightgray;
         box-sizing: border-box;
         border: solid 3px white;
+        
+        // Centering Text
+        text-align: center; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        // Centering Circle
+        transform: translate(-50%, -50%);
 
         &.node_is_minimize {
             width: 12px;

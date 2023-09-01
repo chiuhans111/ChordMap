@@ -5,7 +5,7 @@ const toneNumber = [0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6]
 const toneIsBlack = [false, true, false, true, false, false, true, false, true, false, true, false]
 const f0 = 440 // A4
 const toneMap = {}
-let keyWidth = 7*7
+let keyWidth = 7*6
 
 for (let i = 0; i < 12; i++) {
     const name = toneNames[i]

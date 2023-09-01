@@ -1,64 +1,79 @@
 <template>
   <div>
     <section>
-      <button @click="playEnabledKeys()">Play Enabled Keys</button>
-      <div>
-        <button @click="clearAllKeys()">Clear All Keys</button>
+      <div class="container">
+        <div>
+          <h1>
+            Chord Analyzer
+          </h1>
+        </div>
 
-        <select ref="key selector">
-          <option :value="i" v-for="i in toneNames" :key="i">{{ i }}</option>
-        </select>
-        <select ref="octave selector" value="4">
-          <option :value="i" v-for="i in [2, 3, 4, 5, 6]" :key="i">{{ i }}</option>
-        </select>
-        <select ref="chord selector">
-          <option :value="chord.keys" v-for="chord, i in chordDatabase.chords" :key="i">{{ chord.name }}</option>
-        </select>
-        <button @click="applyChords()">Apply Chords</button>
+        <div>
+          <button @click="clearAllKeys()">Clear All Keys</button>
+          <select ref="key selector">
+            <option :value="i" v-for="i in toneNames" :key="i">{{ i }}</option>
+          </select>
+          <select ref="octave selector" value="4">
+            <option :value="i" v-for="i in [2, 3, 4, 5, 6]" :key="i">{{ i }}</option>
+          </select>
+          <select ref="chord selector">
+            <option :value="chord.keys" v-for="chord, i in chordDatabase.chords" :key="i">{{ chord.name }}</option>
+          </select>
+          <button @click="applyChords()">Apply Chords</button>
+        </div>
+
+        <div>
+          <button @click="playEnabledKeys()">Play Enabled Keys</button>
+          <span>
+            Pitch Class and ratio = {{ pitchClass }}, {{ ratio }}
+          </span>
+        </div>
       </div>
-      <p>
-        Pitch Class and ratio = {{ pitchClass }}, {{ ratio }}
-      </p>
-
     </section>
     <section>
       <div class="scroll_horizontal">
 
-        <div class="piano_container" :style="{ width: fullWidth + 'px' }">
-          <!-- Note Name -->
-          <div class="piano_container-note_name">
-            <div :style="key.containerStyle" v-for="key in pianoKeys" :key="key.index">
-              <span>
-                {{ key.name }}
-              </span>
-              <span class="note_octave">
-                {{ key.octave }}
-              </span>
+        <div class="scroll_horizontal-sticky">
+          ▼ Piano Keys | Click to play
+        </div>
 
-            </div>
-          </div>
+        <div class="piano_container" :style="{ width: fullWidth + 'px' }">
+
           <!-- keyboard -->
           <div class="piano_container-keyboard">
-            <div :style="key.keyStyle" :class="key.cssClass" class="note_body" v-for="key in pianoKeys" :key="key.index" @click.prevent="pianoKeyClick(key)">
+            <div :style="key.keyStyle" :class="Object.assign(key.cssClass, { 'key_enabled': key.enable })" class="note_body" v-for="key in pianoKeys" :key="key.index" @click.prevent="pianoKeyClick(key)">
               <!-- {{ key.name }} -->
             </div>
           </div>
+        </div>
+
+        <div class="scroll_horizontal-sticky">
+          ▼ Chord Switches | Click to toggle on/off
+        </div>
+
+        <div class="piano_container" :style="{ width: fullWidth + 'px' }">
           <!-- Working area -->
           <div class="piano_container-editor">
             <div :style="key.containerStyle" :class="key.cssClass" class="note_box" v-for="key in pianoKeys" :key="key.index" @click.prevent="editorKeyClick(key)">
               <div :class="{ 'note_enable': key.enable }" class="note_box-tag">
                 {{ key.name }}
-                <!-- {{ key.enable }} -->
               </div>
+              <span class="note_octave">
+                {{ key.octave }}
+              </span>
+              <!-- {{ key.enable }} -->
             </div>
           </div>
+        </div>
 
+        <div class="scroll_horizontal-sticky">
+          ▼ Harmonics | Orange = Overtone, Blue = Undertone | Click to play
         </div>
 
         <!-- Result Area -->
         <div class="ratio_hint" :style="{ width: fullWidth + 'px' }">
-          <div class="ratio_hint-row" :class="{ 'is_higher_harmonics': hint.isHigherHarmonics }" v-for="hint, i in analyzeResult.hints" :key="i" @click="playHint(hint)">
-            <div class="ratio_hint-node" :style="node.style" :class="node.cssClass" v-for="node, i in hint.nodes" :key="i">
+          <div class="ratio_hint-row" :class="{ 'is_higher_harmonics': hint.isHigherHarmonics }" v-for="hint, i in analyzeResult.hints" :key="i" @click.prevent="playHint(hint)">
+            <div class="ratio_hint-node" :style="node.style" :class="node.cssClass" v-for="node, i in hint.nodes" :key="i" @click.prevent="playHint(hint, node)">
               <template v-if="!node.cssClass['node_is_minimize']">
                 {{ node.ratio }}
               </template>
@@ -68,6 +83,21 @@
 
       </div>
     </section>
+    <section>
+      <div class="container">
+        <div>
+          <h1>
+            How to use?
+          </h1>
+          <p>1. Click piano key to play sound.</p>
+          <p>2. Toggle the switchs to make a chord.</p>
+          <p>3. View and interact with harmonics.</p>
+        </div>
+      </div>
+    </section>
+    <footer>
+
+    </footer>
   </div>
 </template>
 
@@ -170,8 +200,12 @@ export default {
       const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?keys=${keys}`
       window.history.pushState({}, '', newUrl)
     },
-    playHint(hint) {
-      sound.playNotes(hint.frequencies, 0.5)
+    playHint(hint, node) {
+      if (node === undefined) {
+        sound.playNotes(hint.frequencies, 0.5)
+      } else {
+        sound.playNotes([node.frequency], 0.5)
+      }
       this.ratio = hint.ratio
     }
   },
