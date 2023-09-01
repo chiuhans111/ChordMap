@@ -96,7 +96,15 @@
       </div>
     </section>
     <footer>
-
+      <div class="container">
+        <div>
+          <h3>GitHub Repository</h3>
+          <p><a href="https://github.com/chiuhans111/ChordMap">github.com/chiuhans111/ChordMap</a></p>
+          <h3>Credit:</h3>
+          <p>Developer: Hans Chiu</p>
+          <p>Chords gathered from <a href="https://www.apassion4jazz.net/keys.html">apassion4jazz.net/keys.html</a></p>
+        </div>
+      </div>
     </footer>
   </div>
 </template>
