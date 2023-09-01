@@ -1,4 +1,10 @@
-# chordmap
+# Chord Map
+## Project goal
+map out musical chords mathematically
+## Current function
+compute the integer ratio of musical notes
+
+Demo: https://chiuhans111.github.io/ChordMap/?keys=36,51,55,58,62
 
 ## Project setup
 ```
