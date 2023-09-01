@@ -90,7 +90,7 @@
             How to use?
           </h1>
           <p>1. Click piano key to play sound.</p>
-          <p>2. Toggle the switchs to make a chord.</p>
+          <p>2. Toggle the switches to make a chord.</p>
           <p>3. View and interact with harmonics.</p>
         </div>
       </div>
