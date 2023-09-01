@@ -31,7 +31,7 @@
       </div>
     </section>
     <section>
-      <div class="scroll_horizontal">
+      <div class="scroll_horizontal" ref="scroll region">
 
         <div class="scroll_horizontal-sticky">
           ▼ Piano Keys | Click to play
@@ -113,6 +113,7 @@
 import piano from './script/piano'
 import sound from './script/sound'
 import chord from './script/chord'
+import helper from './script/helper'
 import chordDatabase from './script/chordDatabase'
 console.log(chordDatabase)
 
@@ -142,8 +143,10 @@ export default {
         key.enable = index.includes(key.index)
       }
       this.updateAnalyze()
+      this.scrollKeyIntoView()
     } catch (error) {
       console.log('parameter parsing failed')
+      this.scrollToKeyIndex((piano.keyid_start + piano.keyid_end) / 2)
     }
 
     console.log("keys:", keys)
@@ -170,6 +173,8 @@ export default {
         key.enable = chord.includes(key.index - index)
       }
 
+      // this.scrollToKeyIndex(index + Math.max(...chord) / 2 + 0.5)
+      this.scrollKeyIntoView()
       this.updateAnalyze()
       this.playEnabledKeys()
     },
@@ -177,6 +182,15 @@ export default {
       sound.playNotes([
         key.frequency,
       ], 0.5)
+    },
+    scrollToKeyIndex(index) {
+      let x = piano.index2Xoffset(index)
+      let width = this.$refs['scroll region'].offsetWidth
+      helper.smoothScroll(this.$refs['scroll region'], x - width / 2, 0)
+    },
+    scrollKeyIntoView() {
+      let list = this.pianoKeys.filter(x => x.enable).map(x => x.index)
+      this.scrollToKeyIndex((Math.min(...list) + Math.max(...list)) / 2 + 0.5)
     },
     editorKeyClick(key) {
       key.enable = !key.enable
