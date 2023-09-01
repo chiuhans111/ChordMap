@@ -10,20 +10,30 @@
 
         <div>
           <button @click="clearAllKeys()">Clear All Keys</button>
-          <select ref="key selector">
-            <option :value="i" v-for="i in toneNames" :key="i">{{ i }}</option>
-          </select>
-          <select ref="octave selector" value="4">
-            <option :value="i" v-for="i in [2, 3, 4, 5, 6]" :key="i">{{ i }}</option>
-          </select>
-          <select ref="chord selector">
-            <option :value="chord.keys" v-for="chord, i in chordDatabase.chords" :key="i">{{ chord.name }}</option>
-          </select>
-          <button @click="applyChords()">Apply Chords</button>
+          Chord Preset:
+          <span class="selector-wrapper">
+            <span class="selector-label">Key</span>
+            <select ref="key selector">
+              <option :value="i" v-for="i in toneNames" :key="i">{{ i }}</option>
+            </select>
+          </span>
+          <span class="selector-wrapper">
+            <span class="selector-label">Octave</span>
+            <select ref="octave selector" value="4">
+              <option :value="i" v-for="i in [2, 3, 4, 5, 6]" :key="i">{{ i }}</option>
+            </select>
+          </span>
+          <span class="selector-wrapper">
+            <span class="selector-label">Chord</span>
+            <select ref="chord selector">
+              <option :value="chord.keys" v-for="chord, i in chordDatabase.chords" :key="i">{{ chord.name }}</option>
+            </select>
+          </span>
+          <button @click="applyChords()">Apply!</button>
         </div>
 
         <div>
-          <button @click="playEnabledKeys()">Play Enabled Keys</button>
+          <button class="btn-hightlight" @click="playEnabledKeys()">Play Enabled Keys</button>
           <span>
             Pitch Class and ratio = {{ pitchClass }}, {{ ratio }}
           </span>
